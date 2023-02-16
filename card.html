@@ -1,0 +1,147 @@
+<html>
+<body>
+<style>
+
+.flip-container.hover .flipper {
+  transform: rotateY(180deg);
+  z-index:1;
+}
+.flip-container,
+.front,
+.back {
+  width: 40px;
+  height: 60px;
+  background:#ddd;
+  display: inline-block;
+}
+.flipper {
+  transition: 0.1s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.front,
+.back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.front {
+  transform: rotateY(180deg);
+}
+.back {
+  transform: rotateY(0deg);
+}
+
+
+
+
+div.main{
+display: inline-flex;
+}
+</style>
+
+<div id="main" style="main">
+  
+</div>
+
+<script>
+var num=120;  <!-- change this to add more numbers -->
+var bucket = [];
+
+
+var clicked=0;
+var scored=[];
+var slots=[];
+var round=0;
+var final=0;
+
+function clicked_same(id){
+
+ if (clicked<3){
+  clicked++;
+  var element = document.getElementById(id);
+  element.classList.add("hover");
+  alert(document.getElementById("b"+id).innerHTML);
+  slots.push(id);
+  scored.push(document.getElementById("b"+id).innerHTML);
+  
+  if (clicked==3){
+  alert(scored[0] + " " + scored[1] + " " + scored[2]);
+  if (scored[0]==scored[1] && scored[1]==scored[2]){
+  alert("passed");
+  
+  slots=[];
+  clicked=0;
+  scored=[];
+  final= final+3;
+  round= round+1;
+  }
+  else{
+  setTimeout(function() {
+  
+
+  alert("failed");
+  
+  element = document.getElementById(slots[0]);
+  element.classList.remove("hover");
+  element = document.getElementById(slots[1]);
+  element.classList.remove("hover");
+  element = document.getElementById(slots[2]);
+  element.classList.remove("hover");
+  slots=[];
+  clicked=0;
+  scored=[];
+  round= round+1;
+  }, 1000);
+  }
+  }
+  }	
+  if (final==num){
+  alert("game end");
+  }
+  }
+
+
+
+
+for (var i=0;i<(num/3);i++) {
+    bucket.push(i);
+	console.log(i);
+}
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+var counter=0;
+for (let i = 0; i < 3; i++) {
+shuffle(bucket);
+for (let i = 0; i < num/3; i++) {
+  
+  rannum=Math.floor(Math.random() * num);
+  document.getElementById("main").innerHTML += '<div class="flip-container" onclick="clicked_same(this.id)" id="'+ counter + '"><div class="flipper"><div class="front">?</div><div class="back" id="b' +counter+ '">' + bucket[i] + '</div></div></div>';
+  counter=counter+1;
+  <!-- alert("hi");	 -->
+}
+<!-- document.getElementById("main").innerHTML += '<br>'; -->
+}
+
+
+</script>
+
+</body>
+</html>
